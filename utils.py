@@ -1,6 +1,7 @@
 import RPi.GPIO as IO
 import time
 import subprocess
+import tweepy
 
 IO.setmode(IO.BCM)
 
@@ -12,6 +13,20 @@ ain_2_pin = 27
 
 slow_speed_frequency = 100
 fast_speed_frequency = 300
+
+key_secret = open("../secrets/access_key_secret").readline()[:-1]
+key = open("../secrets/access_key").readline()[:-1]
+
+token_secret = open("../secrets/access_token_secret").readline()[:-1]
+token = open("../secrets/access_token").readline()[:-1]
+
+
+auth = tweepy.OAuthHandler(key, key_secret)
+auth.set_access_token(token, token_secret)
+
+api = tweepy.API(auth)
+
+
 
 def setup():
    slow_speed_frequency = 100
@@ -39,6 +54,7 @@ def spin_til_push():
    pulse.start(45)
    time.sleep(1.5)
    while IO.input(touch_pin) == 0:
+      time.sleep(0.1) 
       continue
    pulse.stop()
 
@@ -46,7 +62,7 @@ def cleanup():
    IO.cleanup()
 
 def take_photo():
-   subprocess.check_call(["fswebcam", "/tmp/test.jpg"])
+   subprocess.check_call(["fswebcam", "--crop", "352x200,0x88", "--no-banner", "/tmp/test.jpg"])
 
 def display_photo():
    subprocess.check_call(["fbi", "/tmp/test.jpg"]) 
@@ -59,10 +75,16 @@ def focus_helper():
 def roll_die():
    spin_til_push()
    take_photo()
-   display_photo()
+
+def tweet_image():
+   api.update_with_media("/tmp/test.jpg", "")
 
 if __name__ == "__main__":
-   setup()
-   roll_die()
-   cleanup()
+   try:
+      setup()
+      roll_die()
+      tweet_image()
+   finally:
+      cleanup()
+
 

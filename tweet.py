@@ -11,7 +11,7 @@ token = open("../secrets/access_token").readline()[:-1]
 auth = tweepy.OAuthHandler(key, key_secret)
 auth.set_access_token(token, token_secret)
 
-print((token, token_secret, key, key_secret))
 api = tweepy.API(auth)
 
-api.update_status(status = "patience patience patience")
+#api.update_status(status = "patience patience patience")
+api.update_with_media("/tmp/test.jpg", "testing testing 123")
