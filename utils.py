@@ -27,25 +27,25 @@ auth.set_access_token(token, token_secret)
 api = tweepy.API(auth)
 
 
-
 def setup():
-   slow_speed_frequency = 100
-   fast_speed_frequency = 200
+    slow_speed_frequency = 100
+    fast_speed_frequency = 200
 
-   IO.setup(pwm_pin, IO.OUT)
-   IO.setup(ain_1_pin, IO.OUT)
-   IO.setup(ain_2_pin, IO.OUT)
-   IO.setup(touch_pin, IO.IN)
+    IO.setup(pwm_pin, IO.OUT)
+    IO.setup(ain_1_pin, IO.OUT)
+    IO.setup(ain_2_pin, IO.OUT)
+    IO.setup(touch_pin, IO.IN)
+
 
 def spin_test():
 
-   pulse = IO.PWM(pwm_pin, fast_speed_frequency) 
-   IO.output(ain_1_pin, IO.HIGH)
-   IO.output(ain_2_pin, IO.LOW)
+    pulse = IO.PWM(pwm_pin, fast_speed_frequency)
+    IO.output(ain_1_pin, IO.HIGH)
+    IO.output(ain_2_pin, IO.LOW)
 
-   pulse.start(50)
-   time.sleep(5)
-   pulse.stop()
+    pulse.start(50)
+    time.sleep(5)
+    pulse.stop()
 
 
 def spin_til_push():
@@ -59,18 +59,21 @@ def spin_til_push():
    pulse.stop()
 
 def cleanup():
-   IO.cleanup()
+    IO.cleanup()
+
 
 def take_photo():
-   subprocess.check_call(["fswebcam", "--crop", "352x200,0x88", "--no-banner", "/tmp/test.jpg"])
+    subprocess.check_call(["fswebcam", "--crop", "352x200,0x88", "--no-banner", "/tmp/test.jpg"])
 
 def display_photo():
-   subprocess.check_call(["fbi", "/tmp/test.jpg"]) 
+    subprocess.check_call(["fbi", "/tmp/test.jpg"])
+
 
 def focus_helper():
-   while 1:
-      take_photo()
-      display_photo()
+    while 1:
+        take_photo()
+        display_photo()
+
 
 def roll_die():
    spin_til_push()
