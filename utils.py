@@ -58,6 +58,28 @@ def spin_til_push():
       continue
    pulse.stop()
 
+# see: https://realpython.com/twitter-bot-python-tweepy/
+def reply_to_mentions(since_id):
+    new_since_id = since_id
+    for tweet in tweepy.Cursor(api.mentions_timeline,
+        since_id=since_id).items():
+        new_since_id = max(tweet.id, new_since_id)
+        if tweet.in_reply_to_status_id is not None:
+            continue
+
+        api.update_status(
+            status="patience patience patience",
+            in_reply_to_status_id=tweet.id,
+            auto_populate_reply_metadata=True
+        )
+    return new_since_id
+
+def reply_to_mentions_loop():
+    since_id = 1
+    while True:
+        since_id = check_mentions(since_id)
+        time.sleep(60)
+
 def cleanup():
     IO.cleanup()
 
