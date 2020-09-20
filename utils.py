@@ -66,12 +66,8 @@ def reply_to_mentions(since_id):
         new_since_id = max(tweet.id, new_since_id)
         if tweet.in_reply_to_status_id is not None:
             continue
-
-        api.update_status(
-            status="patience patience patience",
-            in_reply_to_status_id=tweet.id,
-            auto_populate_reply_metadata=True
-        )
+        roll_die()
+        tweet_image(tweet)
     return new_since_id
 
 def reply_to_mentions_loop():
@@ -101,8 +97,13 @@ def roll_die():
    spin_til_push()
    take_photo()
 
-def tweet_image():
-   api.update_with_media("/tmp/test.jpg", "")
+def tweet_image(tweet):
+   api.update_with_media(
+       "/tmp/test.jpg",
+       "",
+       in_reply_to_status_id=tweet.id,
+       auto_populate_reply_metadata=True
+   )
 
 if __name__ == "__main__":
    try:
