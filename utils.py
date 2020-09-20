@@ -73,7 +73,7 @@ def reply_to_mentions(since_id):
 def reply_to_mentions_loop():
     since_id = 1
     while True:
-        since_id = check_mentions(since_id)
+        since_id = reply_to_mentions(since_id)
         time.sleep(60)
 
 def cleanup():
@@ -108,8 +108,7 @@ def tweet_image(tweet):
 if __name__ == "__main__":
    try:
       setup()
-      roll_die()
-      tweet_image()
+      reply_to_mentions_loop()
    finally:
       cleanup()
 
