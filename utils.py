@@ -73,7 +73,7 @@ def reply_to_mentions(since_id):
     for tweet in tweepy.Cursor(api.mentions_timeline,
         since_id=since_id).items():
         new_since_id = max(tweet.id, new_since_id)
-        logging.info("found tweet to reply to " + tweet.id)
+        logging.info("found tweet to reply to " + str(tweet.id))
         if tweet.in_reply_to_status_id is not None:
             continue
         roll_die()
@@ -112,13 +112,13 @@ def roll_die():
    take_photo()
 
 def save_since_id(id):
-   logging.info("saving since id " + tweet.id)
+   logging.info("saving since id " + str(tweet.id))
    last_tweet_file.seek(0)
    last_tweet_file.write(str(id))
    last_tweet_file.truncate()
 
 def tweet_image(tweet):
-   logging.info("tweeting image in reply to " + tweet.id)
+   logging.info("tweeting image in reply to " + str(tweet.id))
    api.update_with_media(
        "/tmp/test.jpg",
        "",
