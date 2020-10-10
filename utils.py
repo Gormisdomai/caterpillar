@@ -90,7 +90,7 @@ def reply_to_mentions(since_id):
             print("tweet already replied to, skipping")
             continue
         if tweet.created_at < time_turned_on:
-            print("tweet is old, skipping... created at: " str(tweet.created_at) + "turned on: " + str(time_turned_on))
+            print("tweet is old, skipping... created at: " + str(tweet.created_at) + "turned on: " + str(time_turned_on))
             continue
         roll_die()
         save_since_id(since_id)
