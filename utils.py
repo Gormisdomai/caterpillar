@@ -20,6 +20,8 @@ key = open("../secrets/access_key").readline()[:-1]
 token_secret = open("../secrets/access_token_secret").readline()[:-1]
 token = open("../secrets/access_token").readline()[:-1]
 
+last_tweet = open("../data/last_replied_tweet.txt").readline()[:-1]
+last_tweet_file = open("../data/last_replied_tweet.txt", "w")
 
 auth = tweepy.OAuthHandler(key, key_secret)
 auth.set_access_token(token, token_secret)
@@ -71,9 +73,10 @@ def reply_to_mentions(since_id):
     return new_since_id
 
 def reply_to_mentions_loop():
-    since_id = 1
+    since_id = last_tweet or 0
     while True:
         since_id = reply_to_mentions(since_id)
+        save_since_id(since_id)
         time.sleep(60)
 
 def cleanup():
@@ -96,6 +99,11 @@ def focus_helper():
 def roll_die():
    spin_til_push()
    take_photo()
+
+def save_since_id(id):
+    last_tweet_file.seek(0)
+    last_tweet_file.write(id)
+    last_tweet_file.truncate()
 
 def tweet_image(tweet):
    api.update_with_media(
