@@ -30,7 +30,7 @@ print("read last_tweet_id " + str(last_tweet))
 last_tweet_file = open("../data/last_replied_tweet.txt", "w")
 
 all_replied_tweets = [s[:-1] for s in open("../data/all_replied_tweets.txt").readlines()]
-all_replied_tweets_file = open("../data/all_replied_tweets.txt", a)
+all_replied_tweets_file = open("../data/all_replied_tweets.txt", "a")
 
 time_turned_on = datetime.now()
 print("turned on at " + time_turned_on)
