@@ -1,4 +1,3 @@
-# 1307740718266544128
 import RPi.GPIO as IO
 import time
 import subprocess
@@ -116,7 +115,7 @@ def roll_die():
    take_photo()
 
 def save_since_id(id):
-   print("saving since id " + str(tweet.id))
+   print("saving since id " + str(id))
    last_tweet_file.seek(0)
    last_tweet_file.write(str(id))
    last_tweet_file.truncate()
