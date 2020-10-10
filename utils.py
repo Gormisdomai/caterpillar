@@ -4,7 +4,8 @@ import subprocess
 import tweepy
 import logging 
   
-log = logging.getLogger(__name__) 
+log = logging.getLogger(__name__)
+log.level = logging.INFO
 
 IO.setmode(IO.BCM)
 
@@ -26,7 +27,7 @@ token = open("../secrets/access_token").readline()[:-1]
 last_tweet = open("../data/last_replied_tweet.txt").readline()[:-1]
 last_tweet_file = open("../data/last_replied_tweet.txt", "w")
 
-logging.info("setting up twitter API")
+log.info("setting up twitter API")
 auth = tweepy.OAuthHandler(key, key_secret)
 auth.set_access_token(token, token_secret)
 
@@ -34,7 +35,7 @@ api = tweepy.API(auth)
 
 
 def setup():
-    logging.info("setting up GPIO")
+    log.info("setting up GPIO")
     slow_speed_frequency = 100
     fast_speed_frequency = 200
 
@@ -55,16 +56,16 @@ def spin_test():
 
 
 def spin_til_push():
-   logging.info("spinning")
+   log.info("spinning")
    pulse = IO.PWM(pwm_pin, fast_speed_frequency) 
    pulse.start(45)
-   logging.info("ignoring touch input for 1.5 seconds")
+   log.info("ignoring touch input for 1.5 seconds")
    time.sleep(1.5)
-   logging.info("waiting for touch input")
+   log.info("waiting for touch input")
    while IO.input(touch_pin) == 0:
       time.sleep(0.1) 
       continue
-   logging.info("touch detected, stopping")
+   log.info("touch detected, stopping")
    pulse.stop()
 
 # see: https://realpython.com/twitter-bot-python-tweepy/
@@ -73,7 +74,7 @@ def reply_to_mentions(since_id):
     for tweet in tweepy.Cursor(api.mentions_timeline,
         since_id=since_id).items():
         new_since_id = max(tweet.id, new_since_id)
-        logging.info("found tweet to reply to " + str(tweet.id))
+        log.info("found tweet to reply to " + str(tweet.id))
         if tweet.in_reply_to_status_id is not None:
             continue
         roll_die()
@@ -86,7 +87,7 @@ def reply_to_mentions_loop():
     while True:
         since_id = reply_to_mentions(since_id)
         save_since_id(since_id)
-        logging.info("sleeping 60 seconds")
+        log.info("sleeping 60 seconds")
         time.sleep(60)
 
 def cleanup():
@@ -107,18 +108,18 @@ def focus_helper():
 
 
 def roll_die():
-   logging.info("rolling die")
+   log.info("rolling die")
    spin_til_push()
    take_photo()
 
 def save_since_id(id):
-   logging.info("saving since id " + str(tweet.id))
+   log.info("saving since id " + str(tweet.id))
    last_tweet_file.seek(0)
    last_tweet_file.write(str(id))
    last_tweet_file.truncate()
 
 def tweet_image(tweet):
-   logging.info("tweeting image in reply to " + str(tweet.id))
+   log.info("tweeting image in reply to " + str(tweet.id))
    api.update_with_media(
        "/tmp/test.jpg",
        "",
@@ -132,5 +133,3 @@ if __name__ == "__main__":
       reply_to_mentions_loop()
    finally:
       cleanup()
-
-
