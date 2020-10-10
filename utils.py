@@ -25,6 +25,7 @@ token_secret = open("../secrets/access_token_secret").readline()[:-1]
 token = open("../secrets/access_token").readline()[:-1]
 
 last_tweet = open("../data/last_replied_tweet.txt").readline()[:-1]
+print("read since_id " + str(since_id))
 last_tweet_file = open("../data/last_replied_tweet.txt", "w")
 
 print("setting up twitter API")
@@ -84,7 +85,7 @@ def reply_to_mentions(since_id):
 
 def reply_to_mentions_loop():
     since_id = int(last_tweet or 0)
-    print("read since_id " + str(since_id))
+    print("using since_id " + str(since_id))
     while True:
         since_id = reply_to_mentions(since_id)
         save_since_id(since_id)
