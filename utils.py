@@ -33,7 +33,7 @@ all_replied_tweets = [s[:-1] for s in open("../data/all_replied_tweets.txt").rea
 all_replied_tweets_file = open("../data/all_replied_tweets.txt", "a")
 
 time_turned_on = datetime.now()
-print("turned on at " + time_turned_on)
+print("turned on at " + str(time_turned_on))
 
 print("setting up twitter API")
 auth = tweepy.OAuthHandler(key, key_secret)
