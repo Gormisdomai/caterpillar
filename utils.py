@@ -32,7 +32,7 @@ last_tweet_file = open("../data/last_replied_tweet.txt", "w")
 all_replied_tweets = [s[:-1] for s in open("../data/all_replied_tweets.txt").readlines()]
 all_replied_tweets_file = open("../data/all_replied_tweets.txt", "a")
 
-time_turned_on = datetime.now()
+time_turned_on = datetime.utcnow()
 print("turned on at " + str(time_turned_on))
 
 print("setting up twitter API")
