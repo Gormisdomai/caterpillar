@@ -2,7 +2,8 @@ import RPi.GPIO as IO
 import time
 import subprocess
 import tweepy
-import logging 
+import logging
+from datetime import datetime
   
 log = logging.getLogger(__name__)
 log.level = logging.INFO
@@ -27,6 +28,12 @@ token = open("../secrets/access_token").readline()[:-1]
 last_tweet = open("../data/last_replied_tweet.txt").readline()[:-1]
 print("read last_tweet_id " + str(last_tweet))
 last_tweet_file = open("../data/last_replied_tweet.txt", "w")
+
+all_replied_tweets = [s[:-1] for s in open("../data/all_replied_tweets.txt").readlines()]
+all_replied_tweets_file = open("../data/all_replied_tweets.txt", a)
+
+time_turned_on = datetime.now()
+print("turned on at " + time_turned_on)
 
 print("setting up twitter API")
 auth = tweepy.OAuthHandler(key, key_secret)
@@ -77,6 +84,13 @@ def reply_to_mentions(since_id):
         new_since_id = max(tweet.id, new_since_id)
         print("found tweet to reply to " + str(tweet.id))
         if tweet.in_reply_to_status_id is not None:
+            print("tweet is a reply, skipping")
+            continue
+        if tweet.id in all_replied_tweets:
+            print("tweet already replied to, skipping")
+            continue
+        if tweet.created_at < time_turned_on:
+            print("tweet is old, skipping... created at: " str(tweet.created_at) + "turned on: " + str(time_turned_on))
             continue
         roll_die()
         save_since_id(since_id)
@@ -119,6 +133,7 @@ def save_since_id(id):
    last_tweet_file.seek(0)
    last_tweet_file.write(str(id))
    last_tweet_file.truncate()
+   all_replied_tweets_file.write(str(id) + "\n")
 
 def tweet_image(tweet):
    print("tweeting image in reply to " + str(tweet.id))
