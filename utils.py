@@ -27,7 +27,7 @@ token = open("../secrets/access_token").readline()[:-1]
 last_tweet = open("../data/last_replied_tweet.txt").readline()[:-1]
 last_tweet_file = open("../data/last_replied_tweet.txt", "w")
 
-log.info("setting up twitter API")
+print("setting up twitter API")
 auth = tweepy.OAuthHandler(key, key_secret)
 auth.set_access_token(token, token_secret)
 
@@ -35,7 +35,7 @@ api = tweepy.API(auth)
 
 
 def setup():
-    log.info("setting up GPIO")
+    print("setting up GPIO")
     slow_speed_frequency = 100
     fast_speed_frequency = 200
 
@@ -56,16 +56,16 @@ def spin_test():
 
 
 def spin_til_push():
-   log.info("spinning")
+   print("spinning")
    pulse = IO.PWM(pwm_pin, fast_speed_frequency) 
    pulse.start(45)
-   log.info("ignoring touch input for 1.5 seconds")
+   print("ignoring touch input for 1.5 seconds")
    time.sleep(1.5)
-   log.info("waiting for touch input")
+   print("waiting for touch input")
    while IO.input(touch_pin) == 0:
       time.sleep(0.1) 
       continue
-   log.info("touch detected, stopping")
+   print("touch detected, stopping")
    pulse.stop()
 
 # see: https://realpython.com/twitter-bot-python-tweepy/
@@ -74,7 +74,7 @@ def reply_to_mentions(since_id):
     for tweet in tweepy.Cursor(api.mentions_timeline,
         since_id=since_id).items():
         new_since_id = max(tweet.id, new_since_id)
-        log.info("found tweet to reply to " + str(tweet.id))
+        print("found tweet to reply to " + str(tweet.id))
         if tweet.in_reply_to_status_id is not None:
             continue
         roll_die()
@@ -87,7 +87,7 @@ def reply_to_mentions_loop():
     while True:
         since_id = reply_to_mentions(since_id)
         save_since_id(since_id)
-        log.info("sleeping 60 seconds")
+        print("sleeping 60 seconds")
         time.sleep(60)
 
 def cleanup():
@@ -108,18 +108,18 @@ def focus_helper():
 
 
 def roll_die():
-   log.info("rolling die")
+   print("rolling die")
    spin_til_push()
    take_photo()
 
 def save_since_id(id):
-   log.info("saving since id " + str(tweet.id))
+   print("saving since id " + str(tweet.id))
    last_tweet_file.seek(0)
    last_tweet_file.write(str(id))
    last_tweet_file.truncate()
 
 def tweet_image(tweet):
-   log.info("tweeting image in reply to " + str(tweet.id))
+   print("tweeting image in reply to " + str(tweet.id))
    api.update_with_media(
        "/tmp/test.jpg",
        "",
