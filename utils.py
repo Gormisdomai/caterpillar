@@ -25,7 +25,7 @@ token_secret = open("../secrets/access_token_secret").readline()[:-1]
 token = open("../secrets/access_token").readline()[:-1]
 
 last_tweet = open("../data/last_replied_tweet.txt").readline()[:-1]
-print("read since_id " + str(since_id))
+print("read last_tweet_id " + str(last_tweet))
 last_tweet_file = open("../data/last_replied_tweet.txt", "w")
 
 print("setting up twitter API")
