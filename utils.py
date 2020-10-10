@@ -114,7 +114,7 @@ def roll_die():
 def save_since_id(id):
    logging.info("saving since id " + tweet.id)
    last_tweet_file.seek(0)
-   last_tweet_file.write(id)
+   last_tweet_file.write(str(id))
    last_tweet_file.truncate()
 
 def tweet_image(tweet):
