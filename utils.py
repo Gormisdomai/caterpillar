@@ -84,7 +84,7 @@ def reply_to_mentions(since_id):
     return new_since_id
 
 def reply_to_mentions_loop():
-    since_id = int(last_tweet or 0)
+    since_id = int(last_tweet or 1)
     print("using since_id " + str(since_id))
     while True:
         since_id = reply_to_mentions(since_id)
