@@ -64,7 +64,7 @@ def spin_til_push():
    time.sleep(1.5)
    print("waiting for touch input")
    while IO.input(touch_pin) == 0:
-      time.sleep(0.1) 
+      time.sleep(0.03) 
       continue
    print("touch detected, stopping")
    pulse.stop()
