@@ -84,7 +84,7 @@ def reply_to_mentions(since_id):
 
 def reply_to_mentions_loop():
     since_id = int(last_tweet or 0)
-    print("read since_id " + since_id)
+    print("read since_id " + str(since_id))
     while True:
         since_id = reply_to_mentions(since_id)
         save_since_id(since_id)
