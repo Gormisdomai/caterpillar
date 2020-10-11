@@ -137,12 +137,16 @@ def save_since_id(id):
 
 def tweet_image(tweet):
    print("tweeting image in reply to " + str(tweet.id))
-   api.update_with_media(
-       "/tmp/test.jpg",
-       "",
-       in_reply_to_status_id=tweet.id,
-       auto_populate_reply_metadata=True
-   )
+   try:
+      api.update_with_media(
+         "/tmp/test.jpg",
+         "",
+         in_reply_to_status_id=tweet.id,
+         auto_populate_reply_metadata=True
+      )
+   except TweepError as e:
+      print("Tweep Error Encountered " + str(e))
+    
 
 if __name__ == "__main__":
    try:
