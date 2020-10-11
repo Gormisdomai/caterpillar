@@ -140,7 +140,7 @@ def tweet_image(tweet):
    try:
       api.update_with_media(
          "/tmp/test.jpg",
-         "",
+         tweet.text.replace("@AskCaterpillar", ""),
          in_reply_to_status_id=tweet.id,
          auto_populate_reply_metadata=True
       )
