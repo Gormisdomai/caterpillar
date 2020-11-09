@@ -70,7 +70,7 @@ def tweet_random_image(tweet):
    print("tweeting random image in reply to " + str(tweet.id))
    try:
       api.update_with_media(
-         random.choice(os.listdir("/media/usb/images/")),
+         "/media/usb/images/" + random.choice(os.listdir("/media/usb/images/")),
          tweet.text.replace("@Ask_Caterpillar", ""),
          in_reply_to_status_id=tweet.id,
          auto_populate_reply_metadata=True
