@@ -46,8 +46,10 @@ def reply_to_mentions(since_id):
         if tweet.created_at < time_turned_on:
             print("tweet is old, skipping... created at: " + str(tweet.created_at) + "turned on: " + str(time_turned_on))
             continue
-        save_since_id(since_id)
+        print("sleeping 7 seconds before tweeting again")
+        time.sleep(7)
         tweet_random_image(tweet)
+        save_since_id(since_id)
     return new_since_id
 
 def reply_to_mentions_loop():
@@ -56,7 +58,7 @@ def reply_to_mentions_loop():
     while True:
         since_id = reply_to_mentions(since_id)
         save_since_id(since_id)
-        print("sleeping 60 seconds")
+        print("sleeping 60 seconds before checking for tweets again")
         time.sleep(60)
 
 def save_since_id(id):
